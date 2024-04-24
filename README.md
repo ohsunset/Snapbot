@@ -13,7 +13,7 @@ In the command prompt or terminal, run the following command to install the requ
 This command will download and install the necessary packages for the script to work.
 
 Step 5: Run the Script
-Once the required packages are installed, you can run the script. Enter the following command:python "snapbot by ohsunset.py"
+Once the required packages are installed, you can run the script. Enter the following command:python "NEW snapbot by ohsunset.py"
 This command will execute the Python script.
 
 Step 6: Use the Bot
