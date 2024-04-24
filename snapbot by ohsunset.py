@@ -5,7 +5,7 @@ import tkinter as tk
 from tkinter import ttk
 import webbrowser
 
-class AutoClicker:
+class SnapBot:
     def __init__(self):
         self.running = False
         self.click_positions = []
@@ -27,7 +27,7 @@ class AutoClicker:
         pos = pyautogui.position()
         self.click_positions.append(pos)
 
-auto_clicker = AutoClicker()
+auto_clicker = SnapBot()
 
 def toggle_auto_clicker(event=None):
     if not auto_clicker.running:
@@ -56,7 +56,7 @@ def clear_positions():
 
 # GUI
 root = tk.Tk()
-root.title("Auto Clicker")
+root.title("SnapBot")
 root.geometry("400x400")
 root.configure(bg="#FFFFFF")  # Set background color to white
 
