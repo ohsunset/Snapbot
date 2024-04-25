@@ -8,6 +8,7 @@ CODE:
 import pyautogui
 import tkinter as tk
 from tkinter import ttk
+from tkinter import *
 import webbrowser
 import time
 import keyboard  # Import the keyboard module
@@ -43,6 +44,46 @@ class SnapBot:
         pos = pyautogui.position()
         self.click_positions.append(pos)
 
+class Link(tk.Label):
+    
+    def __init__(self, master=None, link=None, fg='grey', font=('Arial', 10), *args, **kwargs):
+        super().__init__(master, *args, **kwargs)
+        self.master = master
+        self.default_color = fg # keeping track of the default color 
+        self.color = 'blue'   # the color of the link after hovering over it 
+        self.default_font = font    # keeping track of the default font
+        self.link = link 
+
+        """ setting the fonts as assigned by the user or by the init function  """
+        self['fg'] = fg
+        self['font'] = font 
+
+        """ Assigning the events to private functions of the class """
+
+        self.bind('<Enter>', self._mouse_on)    # hovering over 
+        self.bind('<Leave>', self._mouse_out)   # away from the link
+        self.bind('<Button-1>', self._callback) # clicking the link
+
+    def _mouse_on(self, *args):
+        """ 
+            if mouse on the link then we must give it the blue color and an 
+            underline font to look like a normal link
+        """
+        self['fg'] = self.color
+        self['font'] = self.default_font + ('underline', )
+
+    def _mouse_out(self, *args):
+        """ 
+            if mouse goes away from our link we must reassign 
+            the default color and font we kept track of   
+        """
+        self['fg'] = self.default_color
+        self['font'] = self.default_font
+
+    def _callback(self, *args):
+        webbrowser.open_new(self.link)  
+
+
 auto_clicker = SnapBot()
 
 def toggle_auto_clicker():
@@ -74,13 +115,15 @@ def clear_positions():
     auto_clicker.click_positions = []
     update_positions_text()
 
-def open_github():
-    webbrowser.open("https://github.com/ohsunset/Snapbot")
+def callback(link):
+    webbrowser.open_new(link)
 
 root = tk.Tk()
 root.title("SnapBot")
 root.geometry("500x600")
-root.configure(bg="#302e2e")
+root.configure(bg="#202225")
+ttk.Style().configure("TButton", padding=6, relief="flat",
+   background="#40444b")
 
 style = ttk.Style()
 style.configure("TFrame", background="#302e2e")
@@ -106,14 +149,19 @@ stop_button.grid(row=4, column=0, pady=5, padx=5)
 clear_button = ttk.Button(frame, text="Clear Positions", command=clear_positions)
 clear_button.grid(row=5, column=0, pady=5, padx=5)
 
-github_button = ttk.Button(frame, text="GitHub", command=open_github)
-github_button.grid(row=6, column=0, pady=5, padx=5)
+# github_button = ttk.Button(frame, text="GitHub", command=open_github)
+# github_button.grid(row=6, column=0, pady=5, padx=5)
 
 acknowledgment_label = ttk.Label(root, text="Made by ohsunsett on discord", font=("Arial", 8), foreground="#FFFFFF", background="#302e2e")
 acknowledgment_label.pack(side=tk.BOTTOM, pady=2)
 
-youtube_link_label = ttk.Label(root, text="Visit my YouTube channel", font=("Arial", 8), foreground="#0000FF", background="#302e2e", cursor="hand2")
-youtube_link_label.pack(side=tk.BOTTOM, pady=2)
+GithubURL = 'https://github.com/ohsunset/Snapbot'
+GithubLink = Link(root, GithubURL, font=("Arial", 8), text='Github', foreground="#0000FF", background="#302e2e", cursor="hand2")
+GithubLink.pack(side=tk.BOTTOM, pady=2)
+
+YoutubeURL = 'https://www.youtube.com/@OhSunset'
+YoutubeLink = Link(root, YoutubeURL, font=("Arial", 8), text='Visit my YouTube channel', foreground="#0000FF", background="#302e2e", cursor="hand2")
+YoutubeLink.pack(side=tk.BOTTOM, pady=2)
 
 # Binding keys using keyboard module
 keyboard.add_hotkey('d', stop_auto_clicker)
