@@ -11,7 +11,10 @@ After installing Python, open a command prompt (Windows) or terminal (macOS/Linu
 Navigate to the directory where you saved the "snapbot by ohsunset.py" script using the cd command. For example, if the script is located on your desktop, you would use: cd Desktop
 
 ## Step 4: Install Required Packages
-In the command prompt or terminal, run the following command to install the required Python packages (pyautogui, keyboard, and tkinter):pip install pyautogui keyboard tkinter
+In the command prompt or terminal, run the following command to install the required Python packages (pyautogui, keyboard, and tkinter):
+```py
+pip install -r requirements.txt
+```
 This command will download and install the necessary packages for the script to work.
 
 ## Step 5: Run the Script
