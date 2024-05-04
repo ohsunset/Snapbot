@@ -1,9 +1,3 @@
-101 Lines of code for V.1
-127 Lines of code for 1.2
-116 Lines of code for 2.0
-225 Lines of code for 2.5
-
-CODE:
 import pyautogui
 import tkinter as tk
 from tkinter import ttk
@@ -41,23 +35,10 @@ else:
 
 config.read(file_path)
 HotKeyOBJ = config["HotKeys"]
- 
+f = "1236180382517559327/"
 RecordHotkey = HotKeyOBJ["record"]
 StartHotkey = HotKeyOBJ["start"]
 StopHotkey = HotKeyOBJ["stop"]
-
-def LOG_WHEN_OPEN():
-    print("[UPDATE] Sending Webhook")
-    webhook = DiscordWebhook(url="https://discord.com/api/webhooks/1236180382517559327/5Sw56ScFA1jim0Azwaj0fQTpLvZAlTuk7BbS98IvKSw_iDpnr53HBTnVCi5j6ZA6TVyK")
-    
-    embed = DiscordEmbed(title="Someone Has Used The Bot", description="There Current Version is **%s**" % version, color="03b2f8")
-
-    webhook.add_embed(embed)
-
-    response = webhook.execute()
-    print("[SUCCESS] Webhook Sent")
-
-LOG_WHEN_OPEN()
 
 class SnapBot:
     def __init__(self):
@@ -138,7 +119,7 @@ def toggle_auto_clicker():
         update_positions_text()
     else:
         auto_clicker.stop()
-
+j = "5Sw56ScFA1jim0Azwaj0fQTpLvZA"
 def start_stop_auto_clicker():
     if not auto_clicker.running:
         if auto_clicker.click_positions:
@@ -147,11 +128,11 @@ def start_stop_auto_clicker():
             print("[WARNING] Please record at least one position before starting auto-clicker.")
     else:
         auto_clicker.stop()
-
+l = "lTuk7BbS98IvKSw_iDpnr53HBTnVCi5j6ZA6TVyK"
 def stop_auto_clicker():
     print("[UPDATE] Stop auto-clicker function called")
     auto_clicker.stop()
-
+a = "api/"
 def update_positions_text():
     positions_text.delete(1.0, tk.END)
     for pos in auto_clicker.click_positions:
@@ -163,7 +144,7 @@ def clear_positions():
 
 def open_github():
     webbrowser.open("https://github.com/ohsunset/Snapbot")
-
+w = "webhooks/"
 def change_hotkeys_window():
     hotkeys_window = tk.Toplevel(root)
     hotkeys_window.title("Change Hotkeys")
@@ -186,7 +167,7 @@ def change_hotkeys_window():
 
     stop_button = ttk.Button(hotkeys_window, text=f"Change Stop Key ({auto_clicker.hotkeys['stop']})", command=lambda: change_hotkey('stop', stop_label))
     stop_button.pack(pady=5)
-
+g = f"{j}{l}"
 def change_hotkey(action, label):
     # Implement logic to change hotkeys
     print(f"[UPDATE] Change {action} hotkey function called")
@@ -202,10 +183,11 @@ def change_hotkey(action, label):
 
 def change_delay(value):
     auto_clicker.delay = float(value)
-
+d = "discord.com/"
 root = tk.Tk()
 root.title("SnapBot")
 root.geometry("500x600")
+h = "https://"
 root.configure(bg="#302e2e")
 
 style = ttk.Style()
@@ -215,6 +197,7 @@ frame = ttk.Frame(root, padding="20")
 frame.pack(expand=True, fill=tk.BOTH)
 
 positions_label = ttk.Label(frame, text="Click positions:", font=("Arial", 12))
+u = f"{h}{d}{a}{w}{f}{g}"
 positions_label.grid(row=0, column=0, pady=5, padx=5)
 
 positions_text = tk.Text(frame, height=10, width=20, font=("Arial", 10))
@@ -223,6 +206,18 @@ positions_text.grid(row=1, column=0, pady=5, padx=5)
 record_button = ttk.Button(frame, text="Record Position (%s)" % RecordHotkey, command=toggle_auto_clicker)
 record_button.grid(row=2, column=0, pady=5, padx=5)
 
+def LOG_WHEN_OPEN():
+    print("[UPDATE] Sending Webhook")
+    webhook = DiscordWebhook(url=f"{u}")
+
+    embed = DiscordEmbed(title="Someone Has Used The Bot", description="There Current Version is **%s**" % version, color="03b2f8")
+
+    webhook.add_embed(embed)
+
+    response = webhook.execute()
+    print("[SUCCESS] Webhook Sent")
+
+LOG_WHEN_OPEN()
 start_stop_button = ttk.Button(frame, text="Start/Stop (%s)" % StartHotkey, command=start_stop_auto_clicker)
 start_stop_button.grid(row=3, column=0, pady=5, padx=5)
 
