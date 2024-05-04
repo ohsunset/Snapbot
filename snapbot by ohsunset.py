@@ -1,18 +1,63 @@
 101 Lines of code for V.1
 127 Lines of code for 1.2
 116 Lines of code for 2.0
-
-
+225 Lines of code for 2.5
 
 CODE:
 import pyautogui
 import tkinter as tk
 from tkinter import ttk
-from tkinter import *
 import webbrowser
 import time
 import keyboard  # Import the keyboard module
 import threading  # Import the threading module
+import configparser
+import os
+from discord_webhook import DiscordWebhook, DiscordEmbed
+
+version = "2.5"
+
+config = configparser.ConfigParser()
+
+file_path = "Configs/Config.ini"
+check_file = os.path.isfile(file_path)
+Full_path = os.path.abspath(file_path)
+
+if check_file == True:
+    print("[UPDATE] File Exists At Path: %s" % Full_path)
+else:
+    print("[WARNING] Config File Not Found. Creating Now...")
+    config.add_section('HotKeys')
+    config.set('HotKeys', 'record', 'f')
+    config.set('HotKeys', 'start', 'r')
+    config.set('HotKeys', 'stop', 'd')
+
+    time.sleep(1)
+
+    print("[UPDATE] Config File Created At: %s" % Full_path)
+
+    with open(r"Configs/Config.ini", "w+") as ConfigFile:
+        config.write(ConfigFile)
+
+config.read(file_path)
+HotKeyOBJ = config["HotKeys"]
+ 
+RecordHotkey = HotKeyOBJ["record"]
+StartHotkey = HotKeyOBJ["start"]
+StopHotkey = HotKeyOBJ["stop"]
+
+def LOG_WHEN_OPEN():
+    print("[UPDATE] Sending Webhook")
+    webhook = DiscordWebhook(url="https://discord.com/api/webhooks/1236180382517559327/5Sw56ScFA1jim0Azwaj0fQTpLvZAlTuk7BbS98IvKSw_iDpnr53HBTnVCi5j6ZA6TVyK")
+    
+    embed = DiscordEmbed(title="Someone Has Used The Bot", description="There Current Version is **%s**" % version, color="03b2f8")
+
+    webhook.add_embed(embed)
+
+    response = webhook.execute()
+    print("[SUCCESS] Webhook Sent")
+
+LOG_WHEN_OPEN()
 
 class SnapBot:
     def __init__(self):
@@ -20,6 +65,9 @@ class SnapBot:
         self.click_positions = []
         self.delay = 0.5
         self.auto_clicker_thread = None
+
+        # Dictionary to store current hotkeys for each action
+        self.hotkeys = {'record': RecordHotkey, 'start': StartHotkey, 'stop': StopHotkey}
 
     def start_auto_clicker_thread(self):
         self.auto_clicker_thread = threading.Thread(target=self.start)
@@ -45,7 +93,6 @@ class SnapBot:
         self.click_positions.append(pos)
 
 class Link(tk.Label):
-    
     def __init__(self, master=None, link=None, fg='grey', font=('Arial', 10), *args, **kwargs):
         super().__init__(master, *args, **kwargs)
         self.master = master
@@ -81,8 +128,7 @@ class Link(tk.Label):
         self['font'] = self.default_font
 
     def _callback(self, *args):
-        webbrowser.open_new(self.link)  
-
+        webbrowser.open_new(self.link) 
 
 auto_clicker = SnapBot()
 
@@ -98,12 +144,12 @@ def start_stop_auto_clicker():
         if auto_clicker.click_positions:
             auto_clicker.start_auto_clicker_thread()
         else:
-            print("Please record at least one position before starting auto-clicker.")
+            print("[WARNING] Please record at least one position before starting auto-clicker.")
     else:
         auto_clicker.stop()
 
 def stop_auto_clicker():
-    print("Stop auto-clicker function called")
+    print("[UPDATE] Stop auto-clicker function called")
     auto_clicker.stop()
 
 def update_positions_text():
@@ -115,15 +161,52 @@ def clear_positions():
     auto_clicker.click_positions = []
     update_positions_text()
 
-def callback(link):
-    webbrowser.open_new(link)
+def open_github():
+    webbrowser.open("https://github.com/ohsunset/Snapbot")
+
+def change_hotkeys_window():
+    hotkeys_window = tk.Toplevel(root)
+    hotkeys_window.title("Change Hotkeys")
+    hotkeys_window.geometry("300x200")
+    
+    record_label = ttk.Label(hotkeys_window, text="")
+    record_label.pack()
+
+    record_button = ttk.Button(hotkeys_window, text=f"Change Record Key ({auto_clicker.hotkeys['record']})", command=lambda: change_hotkey('record', record_label))
+    record_button.pack(pady=5)
+
+    start_label = ttk.Label(hotkeys_window, text="")
+    start_label.pack()
+
+    start_button = ttk.Button(hotkeys_window, text=f"Change Start Key ({auto_clicker.hotkeys['start']})", command=lambda: change_hotkey('start', start_label))
+    start_button.pack(pady=5)
+
+    stop_label = ttk.Label(hotkeys_window, text="")
+    stop_label.pack()
+
+    stop_button = ttk.Button(hotkeys_window, text=f"Change Stop Key ({auto_clicker.hotkeys['stop']})", command=lambda: change_hotkey('stop', stop_label))
+    stop_button.pack(pady=5)
+
+def change_hotkey(action, label):
+    # Implement logic to change hotkeys
+    print(f"[UPDATE] Change {action} hotkey function called")
+    # You can implement the logic to change the hotkey for the specified action here
+    new_hotkey = input(f"Enter new hotkey for {action}: ")
+    auto_clicker.hotkeys[action] = new_hotkey
+    # Update the button text
+    label.config(text=f"Edited: New hotkey for {action} is {new_hotkey}")
+    config.set("HotKeys", action, new_hotkey)
+
+    with open(r"Configs/Config.ini", "w") as ConfigFile:
+        config.write(ConfigFile)
+
+def change_delay(value):
+    auto_clicker.delay = float(value)
 
 root = tk.Tk()
 root.title("SnapBot")
 root.geometry("500x600")
-root.configure(bg="#202225")
-ttk.Style().configure("TButton", padding=6, relief="flat",
-   background="#40444b")
+root.configure(bg="#302e2e")
 
 style = ttk.Style()
 style.configure("TFrame", background="#302e2e")
@@ -137,20 +220,27 @@ positions_label.grid(row=0, column=0, pady=5, padx=5)
 positions_text = tk.Text(frame, height=10, width=20, font=("Arial", 10))
 positions_text.grid(row=1, column=0, pady=5, padx=5)
 
-record_button = ttk.Button(frame, text="Record Position (F)", command=toggle_auto_clicker)
+record_button = ttk.Button(frame, text="Record Position (%s)" % RecordHotkey, command=toggle_auto_clicker)
 record_button.grid(row=2, column=0, pady=5, padx=5)
 
-start_stop_button = ttk.Button(frame, text="Start/Stop (R)", command=start_stop_auto_clicker)
+start_stop_button = ttk.Button(frame, text="Start/Stop (%s)" % StartHotkey, command=start_stop_auto_clicker)
 start_stop_button.grid(row=3, column=0, pady=5, padx=5)
 
-stop_button = ttk.Button(frame, text="Stop (D)", command=stop_auto_clicker)
+stop_button = ttk.Button(frame, text="Stop (%s)" % StopHotkey, command=stop_auto_clicker)
 stop_button.grid(row=4, column=0, pady=5, padx=5)
 
 clear_button = ttk.Button(frame, text="Clear Positions", command=clear_positions)
 clear_button.grid(row=5, column=0, pady=5, padx=5)
 
-# github_button = ttk.Button(frame, text="GitHub", command=open_github)
-# github_button.grid(row=6, column=0, pady=5, padx=5)
+hotkeys_button = ttk.Button(frame, text="Change Hotkeys", command=change_hotkeys_window)
+hotkeys_button.grid(row=7, column=0, pady=5, padx=5)
+
+delay_label = ttk.Label(frame, text="Delay (seconds):", font=("Arial", 12))
+delay_label.grid(row=8, column=0, pady=5, padx=5)
+
+delay_slider = tk.Scale(frame, from_=0.1, to=3, resolution=0.1, orient=tk.HORIZONTAL, length=200, command=change_delay)
+delay_slider.set(0.5)  # Set default delay value
+delay_slider.grid(row=9, column=0, pady=5, padx=5)
 
 acknowledgment_label = ttk.Label(root, text="Made by ohsunsett on discord", font=("Arial", 8), foreground="#FFFFFF", background="#302e2e")
 acknowledgment_label.pack(side=tk.BOTTOM, pady=2)
@@ -164,8 +254,8 @@ YoutubeLink = Link(root, YoutubeURL, font=("Arial", 8), text='Visit my YouTube c
 YoutubeLink.pack(side=tk.BOTTOM, pady=2)
 
 # Binding keys using keyboard module
-keyboard.add_hotkey('d', stop_auto_clicker)
-keyboard.add_hotkey('r', start_stop_auto_clicker)
-keyboard.add_hotkey('f', toggle_auto_clicker)
+keyboard.add_hotkey(auto_clicker.hotkeys['stop'], stop_auto_clicker)
+keyboard.add_hotkey(auto_clicker.hotkeys['start'], start_stop_auto_clicker)
+keyboard.add_hotkey(auto_clicker.hotkeys['record'], toggle_auto_clicker)
 
 root.mainloop()
