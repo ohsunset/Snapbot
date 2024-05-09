@@ -1,4 +1,4 @@
-# Snapbot
+# Snapbot  (Disclaimer - whenever you use this bot it will send a notifacation to the discord's server channel: #webhook
 DISCORD: https://discord.gg/y8WPAYM5HC
 
 ## Step 1: Install Python
