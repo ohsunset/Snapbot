@@ -1,6 +1,6 @@
 # Snapbot  
 DISCORD: https://discord.gg/y8WPAYM5HC
-## thanks to the dev's    Leading- ohsunset   Inqz- nateloeffel   3- discomal101
+## thanks to the dev's:    Lead- ohsunset   Inqz- nateloeffel   3- discomal101
   
  
 
