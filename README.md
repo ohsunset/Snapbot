@@ -1,6 +1,8 @@
 # Snapbot  
 DISCORD: https://discord.gg/y8WPAYM5HC
-(Disclaimer - whenever you use this bot it will send a notifacation to the discord's server channel: #webhook
+## thanks to the dev's    Leading- ohsunset   Inqz- nateloeffel   3- discomal101
+  
+ 
 
 ## Step 1: Install Python
 If you haven't already, you need to install Python on your computer. You can download Python from the official website: Python Downloads. During installation, make sure to check the option to add Python to PATH.
