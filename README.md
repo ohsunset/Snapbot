@@ -1,6 +1,6 @@
 # Snapbot  
 DISCORD: https://discord.gg/y8WPAYM5HC
-## thanks to the dev's:    Lead- ohsunset   Inqz- nateloeffel   3- discomal101
+## THIS APP HAS TELEMETRY THAT INCLUDES A WEBHOOK THAT SENDS AN API TO DISCORD (you can see the channel)
   
  
 
