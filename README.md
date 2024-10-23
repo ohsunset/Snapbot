@@ -1,5 +1,5 @@
 # Snapbot  
-DISCORD: https://discord.gg/y8WPAYM5HC
+DISCORD: (https://discord.com/invite/KBvgwX8UJm
 ## THIS APP HAS TELEMETRY THAT INCLUDES A WEBHOOK THAT SENDS AN API TO DISCORD (you can see the channel)
   
  
